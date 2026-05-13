@@ -57,24 +57,8 @@ uv tool install eirmos
 # One-shot, no install (uv ≥0.5)
 uvx eirmos .
 
-# Classic pipx (also isolated)
-pipx install eirmos
-
-# Single-file zipapp — runs anywhere with Python ≥3.9, no install
-curl -L -o eirmos.pyz https://github.com/<you>/<repo>/releases/latest/download/eirmos.pyz
-chmod +x eirmos.pyz
-./eirmos.pyz .
-
 # Plain pip (last resort, pollutes site-packages)
 pip install eirmos
-
-# From source for development
-git clone https://github.com/<you>/<repo>
-cd <repo>
-pip install -e ".[dev]"
-make test          # 172 tests
-make coverage      # ≥90% gate
-make pyz           # build the single-file zipapp
 ```
 
 ## CLI
