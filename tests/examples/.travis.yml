@@ -1,0 +1,19 @@
+language: python
+python:
+  - "3.10"
+  - "3.11"
+
+jobs:
+  include:
+    - stage: build
+      name: compile
+      script: echo compile
+    - stage: test
+      name: unit
+      script: echo unit
+    - stage: test
+      name: integration
+      script: echo integration
+    - stage: deploy
+      name: release
+      script: echo release

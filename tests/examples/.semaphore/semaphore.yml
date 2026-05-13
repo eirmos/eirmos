@@ -1,0 +1,29 @@
+version: v1.0
+name: example pipeline
+
+blocks:
+  - name: build
+    task:
+      jobs:
+        - name: compile
+          commands:
+            - echo compile
+
+  - name: test
+    dependencies: [build]
+    task:
+      jobs:
+        - name: unit
+          commands:
+            - echo unit
+        - name: integration
+          commands:
+            - echo integration
+
+  - name: deploy
+    dependencies: [test]
+    task:
+      jobs:
+        - name: release
+          commands:
+            - echo release

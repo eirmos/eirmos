@@ -1,0 +1,33 @@
+include:
+  - local: 'tests/examples/includes/jobs.yml'
+
+variables:
+  GLOBAL_VAR: "global"
+
+stages:
+  - build
+  - test
+  - notify
+
+.base_job:
+  extends: .other_base
+  script:
+    - echo "base script"
+
+.other_base:
+  variables:
+    JOB_VAR: "job"
+
+build_job:
+  stage: build
+  extends: .base_job
+  script:
+    - echo "building..."
+
+test_job:
+  stage: test
+  needs: ["build_job"]
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "main"'
+      when: manual
+    - when: on_success

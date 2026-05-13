@@ -1,0 +1,39 @@
+image: python:3.11
+
+pipelines:
+  default:
+    - step:
+        name: lint
+        script:
+          - echo lint
+    - step:
+        name: build
+        script:
+          - echo build
+    - parallel:
+        - step:
+            name: unit
+            script:
+              - echo unit
+        - step:
+            name: integration
+            script:
+              - echo integration
+    - step:
+        name: deploy
+        script:
+          - echo deploy
+
+  branches:
+    main:
+      - step:
+          name: release
+          script:
+            - echo release
+
+  custom:
+    nightly:
+      - step:
+          name: nightly-build
+          script:
+            - echo nightly

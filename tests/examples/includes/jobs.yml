@@ -1,0 +1,5 @@
+notify_job:
+  stage: notify
+  script:
+    - echo "notifying..."
+  needs: ["test_job"]

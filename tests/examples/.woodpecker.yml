@@ -1,0 +1,17 @@
+steps:
+  build:
+    image: alpine
+    commands:
+      - echo build
+
+  test:
+    image: alpine
+    commands:
+      - echo test
+
+  publish:
+    image: alpine
+    commands:
+      - echo publish
+    depends_on:
+      - test

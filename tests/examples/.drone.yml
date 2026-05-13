@@ -1,0 +1,28 @@
+kind: pipeline
+name: default
+
+steps:
+  - name: clone
+    image: alpine
+    commands:
+      - echo clone
+
+  - name: build
+    image: alpine
+    commands:
+      - echo build
+    depends_on:
+      - clone
+
+  - name: test
+    image: alpine
+    commands:
+      - echo test
+    depends_on:
+      - build
+
+  - name: lint
+    image: alpine
+    commands:
+      - echo lint
+    depends_on: clone

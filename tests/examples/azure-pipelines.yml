@@ -1,0 +1,33 @@
+name: azure-multistage
+
+stages:
+  - stage: build
+    jobs:
+      - job: compile
+        steps:
+          - script: echo compile
+      - job: package
+        dependsOn: compile
+        steps:
+          - script: echo package
+
+  - stage: test
+    jobs:
+      - job: unit
+        steps:
+          - script: echo unit
+      - job: integration
+        dependsOn: unit
+        steps:
+          - script: echo integration
+
+  - stage: deploy
+    dependsOn: build
+    jobs:
+      - deployment: prod
+        environment: production
+        strategy:
+          runOnce:
+            deploy:
+              steps:
+                - script: echo deploying

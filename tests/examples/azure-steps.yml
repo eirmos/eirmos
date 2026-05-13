@@ -1,0 +1,4 @@
+name: azure-steps-only
+steps:
+  - script: echo hello
+  - script: echo world

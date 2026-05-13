@@ -1,0 +1,54 @@
+stages:
+  - build
+  - test
+  - deploy
+
+variables:
+  GLOBAL_VAR: "global-value"
+  REGION: "eu-west-1"
+
+.base:
+  variables:
+    BASE_VAR: "base"
+  image: alpine
+
+.deploy_template:
+  extends: .base
+  stage: deploy
+  variables:
+    DEPLOY_VAR: "deploy"
+
+build:
+  stage: build
+  script:
+    - echo build
+
+unit_tests:
+  stage: test
+  needs: ["build"]
+  script:
+    - echo testing
+
+integration_tests:
+  stage: test
+  needs:
+    - job: build
+    - job: unit_tests
+      optional: true
+  script:
+    - echo testing
+
+deploy_eu:
+  extends: .deploy_template
+  needs: ["integration_tests"]
+  variables:
+    DEPLOY_VAR: "deploy-eu"
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "main"'
+      when: on_success
+    - if: 'CUSTOM_BUILD == "release"'
+
+trigger_child:
+  stage: deploy
+  trigger:
+    include: child-pipeline.yml

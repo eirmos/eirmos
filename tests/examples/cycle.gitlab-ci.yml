@@ -1,0 +1,12 @@
+stages:
+  - test
+
+a:
+  stage: test
+  script: [echo a]
+  needs: ["b"]
+
+b:
+  stage: test
+  script: [echo b]
+  needs: ["a"]

@@ -1,0 +1,18 @@
+version: 1.0.{build}
+
+environment:
+  matrix:
+    - PYTHON: "C:\\Python310"
+    - PYTHON: "C:\\Python311"
+
+install:
+  - cmd: echo install
+
+build_script:
+  - cmd: echo build
+
+test_script:
+  - cmd: echo test
+
+deploy_script:
+  - cmd: echo deploy

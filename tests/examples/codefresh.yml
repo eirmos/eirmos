@@ -1,0 +1,44 @@
+version: "1.0"
+stages:
+  - prepare
+  - build
+  - test
+
+steps:
+  clone:
+    title: Clone repo
+    type: git-clone
+    repo: example/repo
+
+  build:
+    title: Build image
+    type: build
+    image_name: app
+    when:
+      steps:
+        - name: clone
+          on:
+            - success
+
+  run_tests:
+    type: parallel
+    steps:
+      unit:
+        title: Unit tests
+        image: app
+        commands:
+          - echo unit
+      lint:
+        title: Lint
+        image: app
+        commands:
+          - echo lint
+
+  publish:
+    title: Publish
+    type: push
+    when:
+      steps:
+        - name: unit
+          on:
+            - success

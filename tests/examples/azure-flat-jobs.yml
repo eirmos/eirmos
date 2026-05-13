@@ -1,0 +1,12 @@
+name: azure-flat
+jobs:
+  - job: lint
+    steps:
+      - script: echo lint
+  - job: build
+    dependsOn: lint
+    steps:
+      - script: echo build
+  - job: test
+    steps:
+      - script: echo test

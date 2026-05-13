@@ -1,0 +1,32 @@
+steps:
+  - label: ":lint:"
+    key: lint
+    command: echo lint
+
+  - label: ":build:"
+    key: build
+    command: echo build
+    depends_on: lint
+
+  - wait
+
+  - label: ":unit:"
+    key: unit
+    command: echo unit
+
+  - label: ":integration:"
+    key: integration
+    command: echo integration
+
+  - wait
+
+  - group: ":rocket: Deploy"
+    key: deploy_group
+    steps:
+      - label: ":staging:"
+        key: deploy_staging
+        command: echo staging
+      - label: ":prod:"
+        key: deploy_prod
+        command: echo prod
+        depends_on: deploy_staging
