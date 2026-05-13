@@ -41,6 +41,7 @@ from .formatters.mermaid import MermaidFormatter
 from .formatters.dot import DotFormatter
 from .formatters.summary import SummaryFormatter
 from .formatters.variables import VariableFormatter
+from .tui import EirmosTUI, run_tui
 
 __all__ = [
     "Colors",
@@ -67,4 +68,6 @@ __all__ = [
     "DotFormatter",
     "SummaryFormatter",
     "VariableFormatter",
+    "EirmosTUI",
+    "run_tui",
 ]

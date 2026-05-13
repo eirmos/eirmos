@@ -64,6 +64,8 @@ def build_arg_parser():
     arg_parser.add_argument('--ci', default=None,
                             choices=[a.slug for a in REGISTRY],
                             help='Force a specific CI system instead of auto-detection')
+    arg_parser.add_argument('--tui', action='store_true',
+                            help='Launch the interactive terminal UI')
     return arg_parser
 
 
@@ -106,6 +108,11 @@ def find_ci_files(base_path):
 
 def main(argv=None):
     args = build_arg_parser().parse_args(argv)
+
+    if args.tui:
+        from .tui import run_tui
+        run_tui(args.path)
+        return 0
 
     if args.no_color or args.output or not sys.stdout.isatty():
         Colors.disable()

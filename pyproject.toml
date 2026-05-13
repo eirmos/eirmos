@@ -37,9 +37,13 @@ dev = [
     "shiv>=1.0",
     "build>=1.0",
 ]
+tui = [
+    "textual>=0.40",
+]
 
 [project.scripts]
 eirmos = "eirmos.cli:main"
+eirmos-tui = "eirmos.tui:run_tui"
 
 [build-system]
 requires = ["setuptools>=61"]
