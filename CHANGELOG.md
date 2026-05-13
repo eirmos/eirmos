@@ -4,6 +4,11 @@ All notable changes to **eirmos** are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/);
 versions follow [SemVer](https://semver.org/).
 
+
+## [0.6.0] — 2026-05-13
+
+Public release of the codebase 
+
 ## [0.5.2] — 2026-05-10
 
 Update versions and documentation
