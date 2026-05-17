@@ -25,6 +25,11 @@ class BasePipelineParser(ABC):
         self.stages = []
         self.parsed_files = set()
         self.file_map = {}
+        # Files we attempted to read but couldn't (malformed YAML, IO
+        # error, or non-mapping top-level). Drives ``status`` so callers
+        # — notably the diff engine — can distinguish a broken config
+        # from a genuinely empty one.
+        self.parse_errors = []
 
     # ------------------------------------------------------------------
     # Parsing
@@ -32,6 +37,19 @@ class BasePipelineParser(ABC):
     @abstractmethod
     def parse(self, file_path=None):
         """Parse the given file (or a default one) and return ``self``."""
+
+    @property
+    def status(self):
+        """``'failed'`` if any file errored, ``'empty'`` if no jobs, else ``'ok'``.
+
+        The diff engine relies on this to avoid reporting a YAML typo as
+        a mass deletion of every job — see plan section 5 (CRITICAL GAP).
+        """
+        if self.parse_errors:
+            return 'failed'
+        if not self.jobs:
+            return 'empty'
+        return 'ok'
 
     # ------------------------------------------------------------------
     # Shared loaders
@@ -41,9 +59,10 @@ class BasePipelineParser(ABC):
 
         Returns ``None`` if the file is missing, unreadable, malformed,
         or the top-level isn't a mapping. On parse / IO error a yellow
-        warning is emitted to stderr (matching the existing parser
-        pattern). The path is added to ``self.parsed_files`` whenever
-        the file exists, so callers don't double-track it.
+        warning is emitted to stderr and the file is recorded in
+        ``self.parse_errors`` so ``status`` can flip to ``'failed'``.
+        The path is added to ``self.parsed_files`` whenever the file
+        exists, so callers don't double-track it.
         """
         file_path = Path(file_path)
         if not file_path.exists():
@@ -55,8 +74,13 @@ class BasePipelineParser(ABC):
         except (yaml.YAMLError, IOError) as e:
             print(f"  {Colors.YELLOW}WARNING: Could not parse {file_path}: {e}{Colors.RESET}",
                   file=sys.stderr)
+            self.parse_errors.append((str(file_path), str(e)))
             return None
         if not isinstance(content, dict):
+            # A non-mapping top-level is malformed for every CI system
+            # we support — flag it instead of silently returning empty.
+            self.parse_errors.append(
+                (str(file_path), "top-level is not a mapping"))
             return None
         return content
 

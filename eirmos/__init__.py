@@ -36,6 +36,7 @@ from .parsers.semaphore import SemaphoreParser
 from .parsers.base import BasePipelineParser
 from .parsers.registry import ParserAdapter, REGISTRY, register_adapter
 from .graph import DependencyGraph
+from .diff import GraphDelta, GraphDiff
 from .formatters.tree import TreeFormatter
 from .formatters.mermaid import MermaidFormatter
 from .formatters.dot import DotFormatter
@@ -63,6 +64,8 @@ __all__ = [
     "REGISTRY",
     "register_adapter",
     "DependencyGraph",
+    "GraphDelta",
+    "GraphDiff",
     "TreeFormatter",
     "MermaidFormatter",
     "DotFormatter",
